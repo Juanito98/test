@@ -1,0 +1,23 @@
+sourceUrl = "ssh://git@github.com/Juanito98/test.git"
+destinationUrl = "ssh://git@github.com/Juanito98/test2.git"
+
+core.workflow(
+    name = "default",
+    origin = git.origin(
+        url = sourceUrl,
+        ref = "main",
+    ),
+    destination = git.github_pr_destination(
+        url = destinationUrl,
+        destination_ref = "main",
+        pr_branch = "from_public_repo_copybara",
+        title = "pr from external public repo",
+        body = "this is a sample pull request",
+        integrates = [],
+    ),
+    destination_files = glob(["copy/**"]),
+    authoring = authoring.pass_thru("Copybara <copybara@example.com>"),
+    transformations = [
+        core.move("", "copy"),
+    ],
+)
