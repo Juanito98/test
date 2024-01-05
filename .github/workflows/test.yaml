@@ -13,13 +13,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: Juanito98/copybara-action@v0.0.0-alpha
+      - uses: Juanito98/copybara-action@v0.0.0-alpha.2
         with:
           access_token: ${{ env.GH_TOKEN }}
           sot_repo: Juanito98/test
-          sot_branch: copybara
           destination_repo: Juanito98/test2
-          workflow: push
-          push_include: "protos/**"
-          push_move: |
+          destination_branch: main
+          origin_include: "protos/**"
+          destination_include: "ghostwriter/client2/**"
+          move: |
             ||ghostwriter/client2

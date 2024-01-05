@@ -1,24 +1,39 @@
-sourceUrl = "https://github.com/Juanito98/test.git"
-destinationUrl = "https://github.com/Juanito98/test2.git"
 
+# Variables
+SOT_REPO = "https://github.com/Juanito98/test.git"
+SOT_BRANCH = "copybara"
+DESTINATION_REPO = "https://github.com/Juanito98/test2.git"
+DESTINATION_BRANCH = "main"
+COMMITTER = "Github Actions <actions@github.com>"
+LOCAL_SOT = "file:///usr/src/app"
+
+PUSH_INCLUDE = ["protos/**"]
+PUSH_EXCLUDE = []
+PUSH_TRANSFORMATIONS = [
+        core.move("protos", "ghostwriter/client2", paths = glob(["**"])),
+]
+
+PR_INCLUDE = ["**"]
+PR_EXCLUDE = []
+PR_TRANSFORMATIONS = [
+]
+
+# Push workflow
 core.workflow(
     name = "default",
     origin = git.origin(
-        url = sourceUrl,
-        ref = "copybara",
+        url = SOT_REPO,
+        ref = SOT_BRANCH,
     ),
     destination = git.github_pr_destination(
-        url = destinationUrl,
-        destination_ref = "main",
-        pr_branch = "from_public_repo_copybara",
-        title = "pr from external public repo",
-        body = "this is a sample pull request",
-        integrates = [],
+        url = DESTINATION_REPO,
+        destination_ref = DESTINATION_BRANCH,
     ),
-    origin_files = glob(["protos/**"]),
-    destination_files = glob(["ghostwriter/client2/**"]),
-    authoring = authoring.pass_thru("Copybara <copybara@example.com>"),
+    origin_files = glob(PUSH_INCLUDE, exclude = PUSH_EXCLUDE),
+    destination_files = glob(["ghostwriter/client2/**"], exclude = PUSH_EXCLUDE),
+    authoring = authoring.pass_thru(default = COMMITTER),
     transformations = [
-        core.move("protos", "ghostwriter/client2"),
-    ],
+        metadata.restore_author("ORIGINAL_AUTHOR", search_all_changes = True),
+        metadata.expose_label("COPYBARA_INTEGRATE_REVIEW"),
+    ] + PUSH_TRANSFORMATIONS if PUSH_TRANSFORMATIONS else core.reverse(PR_TRANSFORMATIONS),
 )
