@@ -4,7 +4,6 @@ on:
 
 env:
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
-  SSH_KEY: ${{ secrets.SSH_KEY }}
 
 jobs:
   move-code:
@@ -14,9 +13,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: olivr/copybara-action@v1.2.3
+      - uses: Juanito98/copybara-action@v0.0.0-alpha.5
         with:
-          ssh_key: ${{ env.SSH_KEY }}
           access_token: ${{ env.GH_TOKEN }}
           sot_repo: Juanito98/test
           destination_repo: Juanito98/test2
+          origin_include: "protos/**"
+          destination_include: "ghostwriter/client2/**"
+          move: |
+            ||ghostwriter/client2
