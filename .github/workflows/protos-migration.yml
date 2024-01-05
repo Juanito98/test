@@ -6,6 +6,10 @@ on:
       - 'protos/**'
       - '.github/workflows/protos-migration.yml'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 env:
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
   DESTINATION_REPO: "Juanito98/test2"
