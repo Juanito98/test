@@ -4,6 +4,7 @@ on:
       - main
     paths:
       - 'protos/**'
+      - '.github/workflows/test.yaml'
 
 env:
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -19,7 +20,6 @@ jobs:
       - uses: Juanito98/copybara-action@v0.0.0-alpha.5
         with:
           access_token: ${{ env.GH_TOKEN }}
-          sot_repo: Juanito98/test
           destination_repo: Juanito98/test2
           origin_include: "protos/**"
           destination_include: "ghostwriter/client2/**"
