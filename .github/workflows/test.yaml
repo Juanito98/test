@@ -17,4 +17,5 @@ jobs:
         with:
           access_token: ${{ env.GH_TOKEN }}
           sot_repo: Juanito98/test
+          sot_branch: copybara
           destination_repo: Juanito98/test2
