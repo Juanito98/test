@@ -1,0 +1,20 @@
+on:
+  push:
+  pull_request_target:
+
+env:
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+jobs:
+  move-code:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: Juanito98/copybara-action@v0.0.0-alpha
+        with:
+          access_token: ${{ env.GH_TOKEN }}
+          sot_repo: Juanito98/test
+          destination_repo: Juanito98/test2
