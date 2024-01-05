@@ -4,10 +4,13 @@ on:
       - main
     paths:
       - 'protos/**'
-      - '.github/workflows/test.yaml'
+      - '.github/workflows/protos-migration.yml'
 
 env:
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  DESTINATION_REPO: "Juanito98/test2"
+  ORIGIN_FOLDER: "protos"
+  DESTINATION_FOLDER: "generated/protos"
 
 jobs:
   move-code:
@@ -19,9 +22,10 @@ jobs:
 
       - uses: Juanito98/copybara-action@v0.0.0-alpha.5
         with:
+          workflow: init
           access_token: ${{ env.GH_TOKEN }}
-          destination_repo: Juanito98/test2
-          origin_include: "protos/**"
-          destination_include: "ghostwriter/client2/**"
+          destination_repo: ${{ env.DESTINATION_REPO }}
+          origin_include: "${{ env.ORIGIN_FOLDER }}/**"
+          destination_include: "${{ env.DESTINATION_FOLDER }}/**"
           move: |
-            ||ghostwriter/client2
+            ||${{ env.DESTINATION_FOLDER }}
