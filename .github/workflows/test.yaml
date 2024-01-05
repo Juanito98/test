@@ -1,6 +1,9 @@
 on:
   push:
-  pull_request_target:
+    branches:
+      - main
+    paths:
+      - 'protos/**'
 
 env:
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
